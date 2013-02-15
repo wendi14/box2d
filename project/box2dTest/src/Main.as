@@ -42,6 +42,9 @@ package
 			
 			var fixtureDef:b2FixtureDef = new b2FixtureDef();
 			fixtureDef.shape = circleShape;
+			fixtureDef.density = 1;
+			fixtureDef.restitution = 0.6;
+			fixtureDef.friction = 0.1;
 			
 			var theBall:b2Body = world.CreateBody(bodyDef);
 			theBall.CreateFixture(fixtureDef);

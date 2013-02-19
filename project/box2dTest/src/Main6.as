@@ -17,7 +17,7 @@ package
 	 * ...
 	 * @author wdc
 	 */
-	public class Main5 extends Sprite 
+	public class Main6 extends Sprite 
 	{
 		private var world:b2World;
 		private var worldScale:Number = 30;
@@ -29,7 +29,7 @@ private var slingY:int=250;
 private var slingR:int = 75;
 
 
-		public function Main5() 
+		public function Main6() 
 		{
 			var gravity:b2Vec2 = new b2Vec2(0, 5);
 			var sleep:Boolean = true;
@@ -55,6 +55,9 @@ brick(450,363,16,64);
 brick(498,363,16,64);
 brick(474, 322, 64, 16);
 
+pig(474, 322, 16);
+
+
 var slingCanvas:Sprite=new Sprite();
 slingCanvas.graphics.lineStyle(1,0xffffff);
 slingCanvas.graphics.drawCircle(0,0,slingR);
@@ -68,7 +71,7 @@ theBird.x=slingX;
 theBird.y=slingY;		
 			theBird.addEventListener(MouseEvent.MOUSE_DOWN,birdClick);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			
+			world.SetContactListener(new customContact());
 			stage.addEventListener(MouseEvent.CLICK,destroyBrick);
 		}
 		
@@ -133,6 +136,25 @@ var birdVelocity:b2Vec2 = new b2Vec2(velocityX, velocityY);
 			
 		}
 		
+		private function pig(pX:int,pY:int,r:Number):void
+		{
+			var bodyDef:b2BodyDef = new b2BodyDef();
+			bodyDef.position.Set(pX/worldScale, pY/worldScale);
+			bodyDef.type = b2Body.b2_dynamicBody;
+			bodyDef.userData = "pig";
+			
+			var bodyShape:b2CircleShape = new b2CircleShape(r/worldScale);
+			
+			var fixtureDef:b2FixtureDef = new b2FixtureDef();
+			fixtureDef.shape = bodyShape;
+			fixtureDef.density = 1;
+			fixtureDef.friction = 0.5;
+			fixtureDef.restitution = 0.4;
+			
+			var body:b2Body = world.CreateBody(bodyDef);
+			body.CreateFixture(fixtureDef);
+		}
+		
 		private function destroyBrick(e:MouseEvent):void 
 		{
 			var pX:Number = mouseX / worldScale;
@@ -191,10 +213,18 @@ var birdVelocity:b2Vec2 = new b2Vec2(velocityX, velocityY);
 		}
 		private function onEnterFrame(e:Event):void 
 		{
-			var timeStep:Number = 1 / 60;
+			var timeStep:Number = 1 / worldScale;
 			world.Step(timeStep, 10, 10);
 			
 			world.ClearForces();
+			
+			for (var b:b2Body = world.GetBodyList(); b; b = b.GetNext())
+			{
+				if (b.GetUserData()=="remove") 
+				{
+					world.DestroyBody(b);
+				}
+			}
 			world.DrawDebugData();
 		}
 		private function brick(px:int,py:int,w:Number,h:Number):void
@@ -202,6 +232,7 @@ var birdVelocity:b2Vec2 = new b2Vec2(velocityX, velocityY);
 			var bodyDef:b2BodyDef = new b2BodyDef();
 			bodyDef.position.Set(px/worldScale, py/worldScale);
 			bodyDef.type = b2Body.b2_dynamicBody;
+			bodyDef.userData = "brick";
 			
 			var polygonShape:b2PolygonShape = new b2PolygonShape();
 			polygonShape.SetAsBox(w / 2 / worldScale, h / 2 / worldScale);

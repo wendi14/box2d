@@ -8,6 +8,7 @@ package
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2FixtureDef;
 	import Box2D.Dynamics.b2World;
+	import Box2D.Dynamics.Controllers.b2GravityController;
 	import Box2D.Dynamics.Joints.b2DistanceJointDef;
 	import Box2D.Dynamics.Joints.b2Joint;
 	import Box2D.Dynamics.Joints.b2JointDef;
@@ -35,6 +36,8 @@ package
 		private var joint:b2RevoluteJoint;
 		
 		private var dir:int = -1;
+		private var b2:b2Body;
+		private var SSS:Number = 10;;
 		public function Main7Joint() 
 		{
 			var gravity:b2Vec2 = new b2Vec2(0, 5);
@@ -44,9 +47,27 @@ package
 			debugDraw();
 			joint1()
 			
+			var gravityControl:customGravity = new customGravity();
+			gravityControl.G=5
+			world.AddController(gravityControl);
+			
 			pos = new b2Vec2(300/worldScale, 10/worldScale);
 			ang = 0;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			
+			
+			
+			
+			b2 = WDCBox2DFactory.createBox(world, 500, 100, 20, 20, false);
+			
+			
+			gravityControl.AddBody(b2);
+			
+			//b2.ApplyImpulse(new b2Vec2(0, 1), b2.GetWorldCenter());
+			//b2.ApplyForce(new b2Vec2(0,SSS), b2.GetWorldCenter());
+			
+  
+			
 		}
 		
 		private function joint1():void 
@@ -71,6 +92,8 @@ package
 		 
 			
 			stage.addEventListener(MouseEvent.CLICK, onCCC);
+			
+			
 		}
 		
 		private function onCCC(e:MouseEvent):void 
@@ -109,7 +132,7 @@ package
 			//b1.SetPositionAndAngle(pos, ang);
 			//joint.GetJointAngle()
 			//trace("joint.GetJointAngle(): " + joint.GetJointSpeed());
-			trace("joint.GetBodyA(): " + joint.GetBodyA());
+			//trace("joint.GetBodyA(): " + joint.GetBodyA());
 			 
 			if (joint.GetBodyA()==null) 
 			{
@@ -125,6 +148,16 @@ package
 			{
 				dir = -1;
 				b1.ApplyForce(new b2Vec2(10, 0), b1.GetWorldCenter());
+			}
+			
+			if (SSS > 0)
+			{
+				b2.SetLinearVelocity(new b2Vec2(0, SSS--));
+				//b2.ApplyForce(new b2Vec2(0,SSS--), b2.GetWorldCenter());
+			}else
+			{
+				//b2.ApplyForce(new b2Vec2(0,0), b2.GetWorldCenter());
+				b2.SetLinearVelocity(new b2Vec2(0, 0));
 			}
 			 
 		}

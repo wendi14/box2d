@@ -55,6 +55,9 @@ brick(450,363,16,64);
 brick(498,363,16,64);
 brick(474, 322, 64, 16);
 
+brick(174, 11, 64, 16);
+brick2(174, 122, 64, 16);
+
 pig(474, 322, 16);
 
 
@@ -245,6 +248,31 @@ var birdVelocity:b2Vec2 = new b2Vec2(velocityX, velocityY);
 			
 			var theBrick:b2Body = world.CreateBody(bodyDef);
 			theBrick.CreateFixture(fixtureDef);
+			
+		}	
+		
+		private function brick2(px:int,py:int,w:Number,h:Number):void
+		{
+			var bodyDef:b2BodyDef = new b2BodyDef();
+			bodyDef.position.Set(px/worldScale, py/worldScale);
+			bodyDef.type = b2Body.b2_kinematicBody;
+			bodyDef.userData = "brick";
+			
+			var polygonShape:b2PolygonShape = new b2PolygonShape();
+			polygonShape.SetAsBox(w / 2 / worldScale, h / 2 / worldScale);
+			
+			var fixtureDef:b2FixtureDef = new b2FixtureDef();
+			fixtureDef.shape = polygonShape;
+			fixtureDef.density = 2;
+			fixtureDef.restitution = 0.4;
+			fixtureDef.friction = 0.5;	
+			
+			
+			var theBrick:b2Body = world.CreateBody(bodyDef);
+			theBrick.CreateFixture(fixtureDef);
+			
+			theBrick.setga 
+			//theBrick.ApplyImpulse(new b2Vec2(0, 11),theBrick.GetWorldCenter());
 			
 		}
 		private function debugDraw():void

@@ -33,6 +33,8 @@ package
 				
 			}
 			
+			b2Body.b2_kinematicBody
+			
 			var force:b2Vec2 = new b2Vec2(0, -15);
 			var forceByMass:b2Vec2 = force.Copy();
 			forceByMass.Multiply(sphereVector[1].GetMass());

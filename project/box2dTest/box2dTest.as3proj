@@ -17,7 +17,6 @@
   <classpaths>
     <class path="src" />
     <class path="lib\Source" />
-    <class path="..\..\..\as" />
   </classpaths>
   <!-- Build options -->
   <build>

@@ -105,26 +105,42 @@ package
 			startPoint = _bomb.GetWorldCenter();
 			trace("startPoint: " + startPoint.x*30,startPoint.y*30);
 			
-			
-			endPoint = new b2Vec2(startPoint.x + 4, startPoint.y);
-			trace("endPoint: " + endPoint.x*30,endPoint.y*30);
-			
-			
-			var inputRay:b2RayCastInput = new b2RayCastInput(startPoint, endPoint);
-			inputRay.maxFraction = 1;
-			 var outRay:b2RayCastOutput = new b2RayCastOutput();
-			for (var b:b2Body=_world.GetBodyList(); b; b=b.GetNext()) 
+			var r:Number = 0
+			var total:uint = 36;
+			for (var i:int = 0; i < total; i++) 
 			{
-				if (b == _bomb|| b.GetFixtureList()==null  ) continue;
-				 
-				 var bo:Boolean = b.GetFixtureList().GetShape().RayCast(outRay, inputRay, b.GetTransform());
-				 
-				 if (bo)
-				 {
-					 var px:Number = inputRay.p1.x + outRay.fraction * (inputRay.p2.x - inputRay.p1.x);
-					 trace("p: " + px*WDCBox2DFactory.WORLD_SCALE);
+				r += Math.PI * 2 / total;
+				endPoint = new b2Vec2(startPoint.x + Math.cos(r)*2, startPoint.y+Math.sin(r)*2);
+				//trace("endPoint: " + endPoint.x*30,endPoint.y*30);
+			
+			
+				var inputRay:b2RayCastInput = new b2RayCastInput(startPoint, endPoint);
+				inputRay.maxFraction = 1;
+				 var outRay:b2RayCastOutput = new b2RayCastOutput();
+				for (var b:b2Body=_world.GetBodyList(); b; b=b.GetNext()) 
+				{
+					if (b == _bomb|| b.GetFixtureList()==null  ) continue;
+					 if (b.GetUserData().isB == true) 
+					 {
+						 b.GetUserData().isB
+						 //trace("b.GetUserData().isB: " + b.GetUserData().isB);
+						 
+						 continue;
+					 }
+					 var bo:Boolean = b.GetFixtureList().GetShape().RayCast(outRay, inputRay, b.GetTransform());
 					 
-				 }
+					 if (bo)
+					 {
+						 var px:Number = inputRay.p1.x + outRay.fraction * (inputRay.p2.x - inputRay.p1.x);
+						 var py:Number = inputRay.p1.y + outRay.fraction * (inputRay.p2.y - inputRay.p1.y);
+						 trace(outRay.normal.x,outRay.normal.y);
+						 var p:b2Vec2 = new b2Vec2(-110*outRay.normal.x, -110*outRay.normal.y)
+						 //b.SetAwake(true);
+						 b.ApplyImpulse(p, new b2Vec2(px, py));
+						 b.GetUserData().isB = true;
+					 }
+					
+				}
 				
 			}
 		}

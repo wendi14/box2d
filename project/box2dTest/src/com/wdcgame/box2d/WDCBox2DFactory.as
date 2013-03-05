@@ -35,7 +35,7 @@ package com.wdcgame.box2d
 			bodyDef.type = isStatic?b2Body.b2_staticBody:b2Body.b2_dynamicBody;
 			bodyDef.position.Set(x / WORLD_SCALE, y / WORLD_SCALE);
 			bodyDef.linearDamping = 0;
-			bodyDef.userData = "aa";
+			bodyDef.userData = {};
 			
 			var shape:b2PolygonShape = new b2PolygonShape();
 			shape.SetAsBox(width / 2 / WORLD_SCALE, height / 2 / WORLD_SCALE);
@@ -58,7 +58,7 @@ package com.wdcgame.box2d
 			var bodyDef:b2BodyDef = new b2BodyDef();
 			bodyDef.type = isStatic?b2Body.b2_staticBody:b2Body.b2_dynamicBody;
 			bodyDef.position.Set(x / WORLD_SCALE, y / WORLD_SCALE);
-			bodyDef.userData = "cc";
+			bodyDef.userData = {};
 			
 			var shape:b2CircleShape = new b2CircleShape(radius / WORLD_SCALE);
 			

@@ -181,6 +181,8 @@ public class b2Island
 			//b.m_linearVelocity += step.dt * (gravity + b.m_invMass * b.m_force);
 			b.m_linearVelocity.x += step.dt * (gravity.x + b.m_invMass * b.m_force.x);
 			b.m_linearVelocity.y += step.dt * (gravity.y + b.m_invMass * b.m_force.y);
+	 
+			
 			b.m_angularVelocity += step.dt * b.m_invI * b.m_torque;
 			
 			// Apply damping.

@@ -6,6 +6,7 @@ package
 	import Box2D.Dynamics.Joints.b2Joint;
 	import Box2D.Dynamics.Joints.b2MouseJoint;
 	import Box2D.Dynamics.Joints.b2MouseJointDef;
+	import com.wdcgame.box2d.MouseJoint;
 	import com.wdcgame.box2d.WDCBox2DFactory;
 	import com.wdcgame.box2d.WDCBox2dFlashBasic;
 	import flash.events.MouseEvent;
@@ -14,11 +15,12 @@ package
 	 * ...
 	 * @author wdc
 	 */
-	public class MouseJoint extends WDCBox2dFlashBasic 
+	public class TestMouseJoint extends WDCBox2dFlashBasic 
 	{
 		private var mouseJoint:b2MouseJoint;
+		private var jj:MouseJoint;
 		
-		public function MouseJoint() 
+		public function TestMouseJoint() 
 		{
 			super(null);
 		}
@@ -41,7 +43,7 @@ package
 			return new b2Vec2(mouseX/WDCBox2DFactory.WORLD_SCALE, mouseY/WDCBox2DFactory.WORLD_SCALE)
 		}
 		
-		private function queryCallBack(fix:b2Fixture):Boolean 
+		/*private function queryCallBack(fix:b2Fixture):Boolean 
 		{
 			trace("queryCallBack: " + queryCallBack);
 			var body:b2Body = fix.GetBody();
@@ -55,16 +57,30 @@ package
 			stage.addEventListener(MouseEvent.MOUSE_UP,killJoint);
 			return false;
 			
+		}*/
+		
+		private function queryCallBack(fix:b2Fixture):Boolean 
+		{
+			trace("queryCallBack: " + queryCallBack);
+			var body:b2Body = fix.GetBody();
+			
+			jj=new MouseJoint(_world, body,  mouseToWorld());
+	 
+			 
+			stage.addEventListener(MouseEvent.MOUSE_MOVE,moveJoint);
+			stage.addEventListener(MouseEvent.MOUSE_UP,killJoint);
+			return false;
+			
 		}
 		
 		private function moveJoint(e:MouseEvent):void 
 		{
-			mouseJoint.SetTarget(mouseToWorld());
+			jj.SetTarget(mouseToWorld());
 		}
 		
 		private function killJoint(e:MouseEvent):void 
 		{
-			_world.DestroyJoint(mouseJoint);
+			jj.DestroyJoint();
 		}
 		
 	}

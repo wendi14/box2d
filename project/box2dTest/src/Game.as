@@ -97,7 +97,7 @@ package
 		
 			createNewStone();
 			
-			setTimeout(checkBomb,1000)
+			//setTimeout(checkBomb,1000)
 		}
 		
 		private function checkBomb():void 
@@ -149,9 +149,11 @@ package
 		{
 			_stone = createBox(_stoneMc.x, _stoneMc.y, _stoneMc.width, _stoneMc.height, false);;
 			
+		
+			
 			var jointDef :b2RevoluteJointDef= new b2RevoluteJointDef();
-			jointDef.lowerAngle = -Math.PI 
-			jointDef.upperAngle = 0
+			//jointDef.lowerAngle = -Math.PI 
+			//jointDef.upperAngle = 0
 			//jointDef.enableMotor = true;
 			//jointDef.motorSpeed = -sss;
 			//jointDef.maxMotorTorque=10
@@ -162,7 +164,7 @@ package
 			joint = _world.CreateJoint(jointDef) as b2RevoluteJoint;
 			
 			
-			
+			_stone.ApplyForce(new b2Vec2(_stone.GetMass()*11, 0), _stone.GetWorldCenter());
 		}
 		
 		override protected function onRender():void 
@@ -171,11 +173,12 @@ package
 			if (joint)
 			{
 				swingStone();
+				
 			}
-			
-			
+		 
 			 
 		}
+ 
 		
 		private function swingStone():void 
 		{
@@ -187,14 +190,15 @@ package
 			{
 				dir = 1;
 				//joint.SetMotorSpeed(-sss);
-				_stone.ApplyImpulse(new b2Vec2(_stone.GetMass()*40, 0), _stone.GetWorldCenter());
+				 
+				_stone.ApplyImpulse(new b2Vec2(_stone.GetMass()*2, 5), _stone.GetWorldCenter());
 				//trace("-_stone.GetMass()*10: " + -_stone.GetMass() * 1110);
 				
 			}else if (dir==1&& joint.GetJointSpeed()>0) 
 			{
 				dir = -1;
 				//joint.SetMotorSpeed(sss);
-				_stone.ApplyImpulse(new b2Vec2(-_stone.GetMass()*40, 0), _stone.GetWorldCenter());
+				_stone.ApplyImpulse(new b2Vec2(-_stone.GetMass()*2, 5), _stone.GetWorldCenter());
 			}
 		}
 		

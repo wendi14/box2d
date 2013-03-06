@@ -64,6 +64,9 @@ package com.wdcgame.box2d
 			
 			var fixtureDef:b2FixtureDef = new b2FixtureDef();
 			fixtureDef.shape = shape;
+			fixtureDef.density = 2;
+			fixtureDef.restitution = 0.4;
+			fixtureDef.friction = 0.5;
 			
 			var b:b2Body = world.CreateBody(bodyDef);
 			b.CreateFixture(fixtureDef);
